@@ -11,8 +11,12 @@ namespace lib
         public Rectangle Rectangle { get; private set; }
         public int ZOrder { get; private set; }
         public bool Visible { get; private set; }
-        
+
+        public bool HasHandle { get { return !Equals(Handle, IntPtr.Zero); } }
+        public bool HasTitle { get { return Title != String.Empty; } }
         public bool HasRectangle { get { return !Equals(Rectangle, Rectangle.Empty); } }
+        public bool HasZOrder { get { return ZOrder != -1; } }
+        public bool IsMinimized { get { return Rectangle.X == -32000 && Rectangle.Y == -32000; } }
 
         public WindowData(IntPtr handle, uint processId, string title, Rectangle rectangle, int zOrder, bool visible)
         {
