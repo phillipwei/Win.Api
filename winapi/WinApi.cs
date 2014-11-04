@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace lib
 {
@@ -84,9 +85,15 @@ namespace lib
             }
         }
 
-        public void AdjustWindow(IntPtr handle, int x, int y, int width, int height)
+        public bool AdjustWindow(IntPtr handle, int x, int y, int width, int height)
         {
-            NativeWinApi.MoveWindow(handle, x, y, width, height, true);
+            var success = NativeWinApi.MoveWindow(handle, x, y, width, height, true);
+            if(!success)
+            {
+                string errorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
+                Console.WriteLine(errorMessage);
+            }
+            return success;
         }
 
         public void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod)
