@@ -84,6 +84,11 @@ namespace lib
             }
         }
 
+        public void AdjustWindow(IntPtr handle, int x, int y, int width, int height)
+        {
+            NativeWinApi.MoveWindow(handle, x, y, width, height, true);
+        }
+
         public void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod)
         {
             var first = ListWindowData().First(wd => Equals(wd.Handle, handle));

@@ -316,5 +316,8 @@ namespace lib
         /// <param name="dwExtraInfo">application-defined information</param>
         [DllImport("User32.dll")]
         internal static extern void mouse_event(UInt32 dwFlags, UInt32 dx, UInt32 dy, UInt32 dwData, IntPtr dwExtraInfo);
+
+        [DllImport("User32.dll")]
+        internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
     }
 }
