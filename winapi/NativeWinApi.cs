@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace lib
+namespace win.api
 {
     /// <summary>
     /// Wrapper for direct com-interop calls to native windows api.

@@ -1,4 +1,4 @@
-﻿namespace lib
+﻿namespace win.api
 {
     public class WindowDataWithProcessInfo
     {

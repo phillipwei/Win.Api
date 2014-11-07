@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 
-namespace lib
+namespace win.api
 {
     public class WinApi : IWinApi
     {

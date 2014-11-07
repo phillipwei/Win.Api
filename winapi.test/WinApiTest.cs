@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace lib.test
+namespace win.api.test
 {
     [TestFixture]
     public class WinApiTest

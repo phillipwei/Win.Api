@@ -55,9 +55,9 @@
     <Compile Include="WinApiTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\winapi\winapi.csproj">
+    <ProjectReference Include="..\winapi\win.api.csproj">
       <Project>{1a51b443-a19a-45b9-b9cc-5e78539c07a0}</Project>
-      <Name>winapi</Name>
+      <Name>win.api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
