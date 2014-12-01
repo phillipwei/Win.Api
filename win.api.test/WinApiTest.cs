@@ -10,7 +10,7 @@ namespace win.api.test
         public void WinApi_ListWinData_Test()
         {
             var api = new WinApi();
-            foreach(var win in api.ListWindowData(true))
+            foreach(var win in api.GetWindows(true))
             {
                 Console.WriteLine(win);
             }

@@ -36,16 +36,16 @@ namespace win.api
             return title.ToString();
         }
 
-        public IEnumerable<WindowData> ListWindowData(bool includeHidden = false)
+        public IEnumerable<WindowData> GetWindows(bool includeHidden = false)
         {
             var returnValue = new List<WindowData>();
             PopulateNextWindow(returnValue, NativeWinApi.GetTopWindow(IntPtr.Zero), includeHidden);
             return returnValue;
         }
 
-        public Dictionary<Process, IEnumerable<WindowData>> ListWindowDataByProcess()
+        public Dictionary<Process, IEnumerable<WindowData>> GetWindowsByProcess()
         {
-            return ListWindowData(false)
+            return GetWindows(false)
                 .GroupBy(w => w.ProcessId)
                 .ToDictionary(g => Process.GetProcessById((int)g.Key), g => g as IEnumerable<WindowData>);
         }
@@ -98,7 +98,7 @@ namespace win.api
 
         public void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod)
         {
-            var first = ListWindowData().First(wd => Equals(wd.Handle, handle));
+            var first = GetWindows().First(wd => Equals(wd.Handle, handle));
             
             if (first == null)
             {
@@ -118,7 +118,7 @@ namespace win.api
             DateTime timeOutPoint = DateTime.Now + timeoutPeriod;
             while (DateTime.Now < timeOutPoint)
             {
-                if (ListWindowData().Any(wd => Equals(wd.Handle, handle) && !wd.IsMinimized))
+                if (GetWindows().Any(wd => Equals(wd.Handle, handle) && !wd.IsMinimized))
                 {
                     return;
                 }
