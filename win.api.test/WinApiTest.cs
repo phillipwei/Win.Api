@@ -1,12 +1,13 @@
 ﻿using System;
-using NUnit.Framework;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace win.api.test
 {
-    [TestFixture]
+    [TestClass]
     public class WinApiTest
     {
-        [Test]
+        [TestMethod]
         public void WinApi_ListWinData_Test()
         {
             var api = new WinApi();
