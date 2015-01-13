@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace win.api
+namespace Win.Api
 {
     public class WindowData
     {

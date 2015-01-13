@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace win.api
+namespace Win.Api
 {
     public static class Extensions
     {

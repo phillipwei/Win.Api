@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace win.api.test
+namespace Win.Api.Test
 {
     [TestClass]
     public class WinApiTest

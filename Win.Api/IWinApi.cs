@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace win.api
+namespace Win.Api
 {
     public interface IWinApi
     {
