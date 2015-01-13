@@ -7,8 +7,8 @@
     <ProjectGuid>{1A51B443-A19A-45B9-B9CC-5E78539C07A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>win.api</RootNamespace>
-    <AssemblyName>win.api</AssemblyName>
+    <RootNamespace>Win.Api</RootNamespace>
+    <AssemblyName>Win.Api</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>

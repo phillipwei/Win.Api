@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "win.api.test", "win.api.test\win.api.test.csproj", "{1958B6AF-609A-485C-A71D-1FB5D1FBF2AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win.Api.Test", "Win.Api.Test\Win.Api.Test.csproj", "{1958B6AF-609A-485C-A71D-1FB5D1FBF2AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{32C41F4A-F96E-4B41-8336-143BF184C141}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "win.api", "win.api\win.api.csproj", "{1A51B443-A19A-45B9-B9CC-5E78539C07A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win.Api", "Win.Api\Win.Api.csproj", "{1A51B443-A19A-45B9-B9CC-5E78539C07A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

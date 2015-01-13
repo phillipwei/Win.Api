@@ -7,8 +7,8 @@
     <ProjectGuid>{1958B6AF-609A-485C-A71D-1FB5D1FBF2AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>winapi.test</RootNamespace>
-    <AssemblyName>winapi.test</AssemblyName>
+    <RootNamespace>Win.Api.Test</RootNamespace>
+    <AssemblyName>Win.Api.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -56,9 +56,9 @@
     <Compile Include="WinApiTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\win.api\win.api.csproj">
+    <ProjectReference Include="..\Win.Api\Win.Api.csproj">
       <Project>{1a51b443-a19a-45b9-b9cc-5e78539c07a0}</Project>
-      <Name>win.api</Name>
+      <Name>Win.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
