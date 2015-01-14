@@ -21,5 +21,7 @@ namespace Win.Api
         void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod);
 
         void SetForegroundWindow(IntPtr handle);
+
+        void SendKeys(IntPtr intPtr, string keys);
     }
 }

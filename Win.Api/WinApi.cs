@@ -122,6 +122,35 @@ namespace Win.Api
                 coord);
         }
 
+        // http://stackoverflow.com/questions/10280000/how-to-create-lparam-of-sendmessage-wm-keydown
+        private void SendKeyCode(IntPtr hwnd, NativeWinApi.VirtualKeys keyCode, bool extended, 
+            NativeWinApi.Messages msgs)
+        {
+            uint scanCode = NativeWinApi.MapVirtualKey((uint)keyCode, 0);
+            uint lParam;
+
+            lParam = (0x00000001 | (scanCode << 16));
+            if (extended)
+            {
+                lParam = lParam | 0x01000000;
+            }
+            NativeWinApi.SendMessage(hwnd, msgs, (IntPtr)keyCode, (IntPtr)lParam);
+        }
+
+        public void SendKey(IntPtr window, char c)
+        {
+            SendKeyCode(window, NativeWinApi.VkKeyScan(c), false, NativeWinApi.Messages.WM_KEYDOWN);
+            SendKeyCode(window, NativeWinApi.VkKeyScan(c), false, NativeWinApi.Messages.WM_KEYUP);
+        }
+
+        public void SendKeys(IntPtr window, string keys)
+        {
+            foreach (var c in keys)
+            {
+                SendKey(window, c);
+            }
+        }
+
         public void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod)
         {
             var first = GetWindows().First(wd => Equals(wd.Handle, handle));
