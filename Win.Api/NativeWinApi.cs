@@ -217,6 +217,9 @@ namespace Win.Api
         }
 
         #endregion
+        
+        [DllImport("User32.dll")]
+        internal static extern IntPtr SendMessage(IntPtr hWnd, Messages Msg, MouseKeyFlags wParam, IntPtr lParam);
 
         [DllImport("User32.dll")]
         internal static extern IntPtr SendMessage(IntPtr hWnd, Messages Msg, IntPtr wParam, IntPtr lParam);

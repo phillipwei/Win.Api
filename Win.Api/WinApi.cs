@@ -112,7 +112,7 @@ namespace Win.Api
             NativeWinApi.SendMessage(
                 window,
                 NativeWinApi.Messages.WM_LBUTTONDOWN,
-                IntPtr.Zero,
+                NativeWinApi.MouseKeyFlags.MK_LBUTTON,
                 coord);
             System.Threading.Thread.Sleep(100);
             NativeWinApi.SendMessage(
