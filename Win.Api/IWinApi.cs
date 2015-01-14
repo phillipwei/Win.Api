@@ -15,5 +15,11 @@ namespace Win.Api
         Bitmap CaptureWindow(IntPtr hwnd, PixelFormat pixelFormat = PixelFormat.Format32bppArgb);
         
         bool AdjustWindow(IntPtr handle, int x, int y, int width, int height);
+
+        void SendLeftClick(IntPtr hwnd, Point point);
+
+        void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod);
+
+        void SetForegroundWindow(IntPtr handle);
     }
 }

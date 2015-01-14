@@ -96,6 +96,32 @@ namespace Win.Api
             return success;
         }
 
+        public void SendLeftClick(IntPtr window, Point clientPoint)
+        {
+            SendLeftClick(window, clientPoint.X, clientPoint.Y);
+        }
+
+        private IntPtr CreateMouseClickCoordinates(int x, int y)
+        {
+            return (IntPtr)((y << 16) | (x & 0xffff));
+        }
+
+        public void SendLeftClick(IntPtr window, int clientX, int clientY)
+        {
+            var coord = CreateMouseClickCoordinates(clientX, clientY);
+            NativeWinApi.SendMessage(
+                window,
+                NativeWinApi.Messages.WM_LBUTTONDOWN,
+                IntPtr.Zero,
+                coord);
+            System.Threading.Thread.Sleep(100);
+            NativeWinApi.SendMessage(
+                window,
+                NativeWinApi.Messages.WM_LBUTTONUP,
+                IntPtr.Zero,
+                coord);
+        }
+
         public void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod)
         {
             var first = GetWindows().First(wd => Equals(wd.Handle, handle));
@@ -124,6 +150,11 @@ namespace Win.Api
                 }
             }
             throw new TimeoutException("Could not restore window");
+        }
+
+        public void SetForegroundWindow(IntPtr handle)
+        {
+            NativeWinApi.SetForegroundWindow(handle);
         }
 
         private static object _blockInputSyncRoot = new object();
@@ -279,41 +310,7 @@ namespace Win.Api
             }
         }
 
-        public static void MouselessClick(IntPtr window, Point clientPoint)
-        {
-            MouselessClick(window, clientPoint.X, clientPoint.Y);
-        }
-
-        private static IntPtr MakeMouseClickParam(int x, int y)
-        {
-            return (IntPtr)((y << 16) | (x & 0xffff));
-        }
-
-        public static void MouselessClick(IntPtr window, int clientX, int clientY)
-        {
-            // NativeWinApi.SetForegroundWindow(window);
-            IntPtr coord = MakeMouseClickParam(clientX, clientY);
-            NativeWinApi.SendMessage(
-                window,
-                NativeWinApi.Messages.WM_LBUTTONDOWN,
-                IntPtr.Zero,
-                // (IntPtr)helper.win32.NativeWinApi.MouseKeyFlags.MK_RBUTTON,
-                coord);
-            NativeWinApi.SendMessage(
-                window,
-                NativeWinApi.Messages.WM_LBUTTONUP,
-                IntPtr.Zero,
-                // (IntPtr)helper.win32.NativeWinApi.MouseKeyFlags.MK_RBUTTON,
-                coord);
-        }
-
-        public static void LeftClick()
-        {
-            NativeWinApi.mouse_event((int)NativeWinApi.MouseEventMessages.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, IntPtr.Zero);
-            NativeWinApi.mouse_event((int)NativeWinApi.MouseEventMessages.MOUSEEVENTF_LEFTUP, 0, 0, 0, IntPtr.Zero);
-        }
-
-        public static void RefreshNotificationArea()
+        public void RefreshNotificationArea()
         {
             IntPtr startBarHandle = NativeWinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", "");
             IntPtr trayHandle = NativeWinApi.FindWindowEx(startBarHandle, IntPtr.Zero, "TrayNotifyWnd", "");
@@ -329,7 +326,7 @@ namespace Win.Api
             {
                 for (int y = notifyRectangle.Top; y < notifyRectangle.Bottom; y += 5)
                 {
-                    NativeWinApi.SendMessage(notifyIconsHandle, NativeWinApi.Messages.WM_MOUSEMOVE, IntPtr.Zero, MakeMouseClickParam(x, y));
+                    NativeWinApi.SendMessage(notifyIconsHandle, NativeWinApi.Messages.WM_MOUSEMOVE, IntPtr.Zero, CreateMouseClickCoordinates(x, y));
                 }
             }
         }
