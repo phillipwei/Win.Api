@@ -114,7 +114,7 @@ namespace Win.Api
                 NativeWinApi.Messages.WM_LBUTTONDOWN,
                 IntPtr.Zero,
                 coord);
-            System.Threading.Thread.Sleep(10);
+            System.Threading.Thread.Sleep(100);
             NativeWinApi.SendMessage(
                 window,
                 NativeWinApi.Messages.WM_LBUTTONUP,
@@ -150,6 +150,11 @@ namespace Win.Api
                 }
             }
             throw new TimeoutException("Could not restore window");
+        }
+
+        public void SetForegroundWindow(IntPtr handle)
+        {
+            NativeWinApi.SetForegroundWindow(handle);
         }
 
         private static object _blockInputSyncRoot = new object();
