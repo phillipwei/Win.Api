@@ -8,11 +8,14 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using log4net;
 
 namespace Win.Api
 {
     public class WinApi : IWinApi
     {
+        private static readonly ILog _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public readonly int MaxWindowTitle = 512;
 
         public Rectangle GetWindowRectangle(IntPtr hWnd)
@@ -52,6 +55,7 @@ namespace Win.Api
 
         public Bitmap CaptureWindow(IntPtr hwnd, PixelFormat pixelFormat)
         {
+            _logger.DebugFormat("CaptureWindow({0},{1})", hwnd, pixelFormat);
             var rectangle = new NativeWinApi.Rectangle();
             NativeWinApi.GetWindowRect(hwnd, ref rectangle);
             var bmp = new Bitmap(rectangle.Width, rectangle.Height, pixelFormat);
