@@ -17,7 +17,7 @@ namespace Win.Api
 
         public Rectangle GetWindowRectangle(IntPtr hWnd)
         {
-            NativeWinApi.Rectangle rectangle = new NativeWinApi.Rectangle();
+            var rectangle = new NativeWinApi.Rectangle();
             NativeWinApi.GetWindowRect(hWnd, ref rectangle);
 
             return new Rectangle(
@@ -31,7 +31,7 @@ namespace Win.Api
         public string GetWindowTitle(IntPtr hWnd)
         {
             var title = new StringBuilder(this.MaxWindowTitle);
-            int titleLength = NativeWinApi.GetWindowText(hWnd, title, title.Capacity + 1);
+            var titleLength = NativeWinApi.GetWindowText(hWnd, title, title.Capacity + 1);
             title.Length = titleLength;
             return title.ToString();
         }
@@ -77,7 +77,7 @@ namespace Win.Api
                 list.Add(new WindowData(hWnd, processId, GetWindowTitle(hWnd), GetWindowRectangle(hWnd), list.Count, visible));
             }
 
-            IntPtr nextWindow = NativeWinApi.GetWindow(hWnd, NativeWinApi.GetWindowCommand.GW_HWNDNEXT);
+            var nextWindow = NativeWinApi.GetWindow(hWnd, NativeWinApi.GetWindowCommand.GW_HWNDNEXT);
 
             if (nextWindow != IntPtr.Zero)
             {
@@ -90,7 +90,7 @@ namespace Win.Api
             var success = NativeWinApi.MoveWindow(handle, x, y, width, height, true);
             if(!success)
             {
-                string errorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
+                var errorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
                 Console.WriteLine(errorMessage);
             }
             return success;
@@ -126,7 +126,7 @@ namespace Win.Api
         private void SendKeyCode(IntPtr hwnd, NativeWinApi.VirtualKeys keyCode, bool extended, 
             NativeWinApi.Messages msgs)
         {
-            uint scanCode = NativeWinApi.MapVirtualKey((uint)keyCode, 0);
+            var scanCode = NativeWinApi.MapVirtualKey((uint)keyCode, 0);
             uint lParam;
 
             lParam = (0x00000001 | (scanCode << 16));
@@ -170,7 +170,7 @@ namespace Win.Api
                 // NativeWinApi.ShowWindow(handle, NativeWinApi.WindowShowStyle.Restore);
             }
 
-            DateTime timeOutPoint = DateTime.Now + timeoutPeriod;
+            var timeOutPoint = DateTime.Now + timeoutPeriod;
             while (DateTime.Now < timeOutPoint)
             {
                 if (GetWindows().Any(wd => Equals(wd.Handle, handle) && !wd.IsMinimized))
@@ -252,9 +252,9 @@ namespace Win.Api
                 {
                     lock (_objLock)
                     {
-                        NativeWinApi.KbDllHookStruct keyboardHookStruct = (NativeWinApi.KbDllHookStruct)Marshal.PtrToStructure(lParam, typeof(NativeWinApi.KbDllHookStruct));
-                        Keys key = (Keys)keyboardHookStruct.vkCode;
-                        bool released = (keyboardHookStruct.flags & NativeWinApi.KbDllHookStructFlags.LLKHF_UP) == NativeWinApi.KbDllHookStructFlags.LLKHF_UP;
+                        var keyboardHookStruct = (NativeWinApi.KbDllHookStruct)Marshal.PtrToStructure(lParam, typeof(NativeWinApi.KbDllHookStruct));
+                        var key = (Keys)keyboardHookStruct.vkCode;
+                        var released = (keyboardHookStruct.flags & NativeWinApi.KbDllHookStructFlags.LLKHF_UP) == NativeWinApi.KbDllHookStructFlags.LLKHF_UP;
                         if (released && _pressedKeys.Contains(key))
                         {
                             _pressedKeys.Remove(key);
@@ -327,10 +327,10 @@ namespace Win.Api
 
         private static IntPtr SetHook(NativeWinApi.HookType hookType, NativeWinApi.HookProc proc)
         {
-            using (Process curProcess = Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
+            using (var curProcess = Process.GetCurrentProcess())
+            using (var curModule = curProcess.MainModule)
             {
-                IntPtr registeredHook = NativeWinApi.SetWindowsHookEx(hookType, proc, NativeWinApi.GetModuleHandle(curModule.ModuleName), 0);
+                var registeredHook = NativeWinApi.SetWindowsHookEx(hookType, proc, NativeWinApi.GetModuleHandle(curModule.ModuleName), 0);
                 if (registeredHook == IntPtr.Zero)
                 {
                     throw new Exception("Failed to register hook for hooktype " + hookType);
@@ -341,19 +341,19 @@ namespace Win.Api
 
         public void RefreshNotificationArea()
         {
-            IntPtr startBarHandle = NativeWinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", "");
-            IntPtr trayHandle = NativeWinApi.FindWindowEx(startBarHandle, IntPtr.Zero, "TrayNotifyWnd", "");
-            IntPtr notifyHandle = NativeWinApi.FindWindowEx(trayHandle, IntPtr.Zero, "SysPager", "");
-            IntPtr notifyIconsHandle = NativeWinApi.FindWindowEx(notifyHandle, IntPtr.Zero, "ToolbarWindow32", "Notification Area");
+            var startBarHandle = NativeWinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", "");
+            var trayHandle = NativeWinApi.FindWindowEx(startBarHandle, IntPtr.Zero, "TrayNotifyWnd", "");
+            var notifyHandle = NativeWinApi.FindWindowEx(trayHandle, IntPtr.Zero, "SysPager", "");
+            var notifyIconsHandle = NativeWinApi.FindWindowEx(notifyHandle, IntPtr.Zero, "ToolbarWindow32", "Notification Area");
             if (notifyIconsHandle == IntPtr.Zero)
             {
                 notifyIconsHandle = NativeWinApi.FindWindowEx(notifyHandle, IntPtr.Zero, "ToolbarWindow32", "User Promoted Notification Area");
             }
-            NativeWinApi.Rectangle notifyRectangle = new NativeWinApi.Rectangle();
+            var notifyRectangle = new NativeWinApi.Rectangle();
             NativeWinApi.GetClientRect(notifyIconsHandle, ref notifyRectangle);
-            for (int x = notifyRectangle.Left; x < notifyRectangle.Right; x += 5)
+            for (var x = notifyRectangle.Left; x < notifyRectangle.Right; x += 5)
             {
-                for (int y = notifyRectangle.Top; y < notifyRectangle.Bottom; y += 5)
+                for (var y = notifyRectangle.Top; y < notifyRectangle.Bottom; y += 5)
                 {
                     NativeWinApi.SendMessage(notifyIconsHandle, NativeWinApi.Messages.WM_MOUSEMOVE, IntPtr.Zero, CreateMouseClickCoordinates(x, y));
                 }
