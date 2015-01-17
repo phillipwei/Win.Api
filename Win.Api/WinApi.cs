@@ -53,6 +53,8 @@ namespace Win.Api
                 .ToDictionary(g => Process.GetProcessById((int)g.Key), g => g as IEnumerable<WindowData>);
         }
 
+        // NOTE: It's super important the consumer realizes they are responsible for the memory usage of Bitmap -- if
+        // you don't dispose, you are hosed. 
         public Bitmap CaptureWindow(IntPtr hwnd, PixelFormat pixelFormat)
         {
             _logger.DebugFormat("CaptureWindow({0},{1})", hwnd, pixelFormat);
