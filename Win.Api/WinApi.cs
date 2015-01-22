@@ -57,7 +57,7 @@ namespace Win.Api
         // you don't dispose, you are hosed. 
         public Bitmap CaptureWindow(IntPtr hwnd, PixelFormat pixelFormat)
         {
-            _logger.DebugFormat("CaptureWindow({0},{1})", hwnd, pixelFormat);
+            // _logger.DebugFormat("CaptureWindow({0},{1})", hwnd, pixelFormat);
             var rectangle = new NativeWinApi.Rectangle();
             NativeWinApi.GetWindowRect(hwnd, ref rectangle);
             var bmp = new Bitmap(rectangle.Width, rectangle.Height, pixelFormat);
