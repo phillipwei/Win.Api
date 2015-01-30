@@ -104,7 +104,7 @@ namespace Win.Api
 
         public void SendLeftClick(IntPtr window, Point clientPoint)
         {
-            SendLeftClick(window, clientPoint.X, clientPoint.Y);
+            SendLeftClick(window, clientPoint.X, clientPoint.Y, TimeSpan.FromSeconds(0.2));
         }
 
         private IntPtr CreateMouseClickCoordinates(int x, int y)
@@ -112,7 +112,7 @@ namespace Win.Api
             return (IntPtr)((y << 16) | (x & 0xffff));
         }
 
-        public void SendLeftClick(IntPtr window, int clientX, int clientY)
+        public void SendLeftClick(IntPtr window, int clientX, int clientY, TimeSpan clickTime)
         {
             var coord = CreateMouseClickCoordinates(clientX, clientY);
             NativeWinApi.SendMessage(
@@ -120,7 +120,7 @@ namespace Win.Api
                 NativeWinApi.Messages.WM_LBUTTONDOWN,
                 NativeWinApi.MouseKeyFlags.MK_LBUTTON,
                 coord);
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(clickTime);
             NativeWinApi.SendMessage(
                 window,
                 NativeWinApi.Messages.WM_LBUTTONUP,
