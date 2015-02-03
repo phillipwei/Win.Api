@@ -6,7 +6,7 @@ namespace Win.Api
     public class WindowData
     {
         public IntPtr Handle { get; private set; }
-        public uint ProcessId { get; private set; }
+        public int ProcessId { get; private set; }
         public string Title { get; private set; }
         public Rectangle Rectangle { get; private set; }
         public int ZOrder { get; private set; }
@@ -18,7 +18,7 @@ namespace Win.Api
         public bool HasZOrder { get { return ZOrder != -1; } }
         public bool IsMinimized { get { return Rectangle.X == -32000 && Rectangle.Y == -32000; } }
 
-        public WindowData(IntPtr handle, uint processId, string title, Rectangle rectangle, int zOrder, bool visible)
+        public WindowData(IntPtr handle, int processId, string title, Rectangle rectangle, int zOrder, bool visible)
         {
             Handle = handle;
             ProcessId = processId;

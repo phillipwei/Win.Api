@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Management;
 using log4net;
 
 namespace Win.Api
@@ -53,6 +54,29 @@ namespace Win.Api
                 .ToDictionary(g => Process.GetProcessById((int)g.Key), g => g as IEnumerable<WindowData>);
         }
 
+        public IEnumerable<WindowData> GetWindows(Func<Process,bool> processSelector)
+        {
+            return GetWindowsByProcess()
+                .Where(kvp => processSelector(kvp.Key))
+                .SelectMany(kvp => kvp.Value);
+        }
+
+        public string GetProcessPath(int processId)
+        {
+            var wmiQueryString = "SELECT ExecutablePath FROM Win32_Process WHERE ProcessId = " + processId;
+
+            using (var searcher = new ManagementObjectSearcher(wmiQueryString))
+            using (var results = searcher.Get())
+            {
+                var mo = results.Cast<ManagementObject>().First();
+                if (mo == null)
+                {
+                    return null;
+                }
+                return (string) mo["ExecutablePath"];
+            }
+        }
+
         // NOTE: It's super important the consumer realizes they are responsible for the memory usage of Bitmap -- if
         // you don't dispose, you are hosed. 
         public Bitmap CaptureWindow(IntPtr hwnd, PixelFormat pixelFormat)
@@ -80,7 +104,7 @@ namespace Win.Api
 
             if (visible || includeHidden)
             {
-                list.Add(new WindowData(hWnd, processId, GetWindowTitle(hWnd), GetWindowRectangle(hWnd), list.Count, visible));
+                list.Add(new WindowData(hWnd, (int)processId, GetWindowTitle(hWnd), GetWindowRectangle(hWnd), list.Count, visible));
             }
 
             var nextWindow = NativeWinApi.GetWindow(hWnd, NativeWinApi.GetWindowCommand.GW_HWNDNEXT);
