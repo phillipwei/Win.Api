@@ -12,6 +12,7 @@ namespace Win.Api
         public int ZOrder { get; private set; }
         public bool Visible { get; private set; }
 
+        public Size Size { get { return Rectangle.Size; } }
         public bool HasHandle { get { return !Equals(Handle, IntPtr.Zero); } }
         public bool HasTitle { get { return Title != String.Empty; } }
         public bool HasRectangle { get { return !Equals(Rectangle, Rectangle.Empty); } }
