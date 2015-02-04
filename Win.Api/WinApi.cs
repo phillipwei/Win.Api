@@ -101,10 +101,11 @@ namespace Win.Api
             var visible = NativeWinApi.IsWindowVisible(hWnd);
             uint processId;
             var threadId = NativeWinApi.GetWindowThreadProcessId(hWnd, out processId);
-
+            var parent = NativeWinApi.GetParent(hWnd);
+            
             if (visible || includeHidden)
             {
-                list.Add(new WindowData(hWnd, (int)processId, GetWindowTitle(hWnd), GetWindowRectangle(hWnd), list.Count, visible));
+                list.Add(new WindowData(hWnd, parent, (int)processId, GetWindowTitle(hWnd), GetWindowRectangle(hWnd), list.Count, visible));
             }
 
             var nextWindow = NativeWinApi.GetWindow(hWnd, NativeWinApi.GetWindowCommand.GW_HWNDNEXT);
@@ -152,6 +153,12 @@ namespace Win.Api
                 coord);
         }
 
+        public void SendDoubleLeftClick(IntPtr hwnd, Point point, TimeSpan clickDownTime)
+        {
+            SendLeftClick(hwnd, point, clickDownTime);
+            SendLeftClick(hwnd, point, clickDownTime);
+        }
+        
         private IntPtr CreateMouseClickCoordinates(int x, int y)
         {
             return (IntPtr)((y << 16) | (x & 0xffff));
