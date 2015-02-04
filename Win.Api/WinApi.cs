@@ -131,12 +131,12 @@ namespace Win.Api
             SendLeftClick(window, clientPoint.X, clientPoint.Y, TimeSpan.FromSeconds(0.2));
         }
 
-        private IntPtr CreateMouseClickCoordinates(int x, int y)
+        public void SendLeftClick(IntPtr window, Point clientPoint, TimeSpan clickDownTime)
         {
-            return (IntPtr)((y << 16) | (x & 0xffff));
+            SendLeftClick(window, clientPoint.X, clientPoint.Y, clickDownTime);
         }
 
-        public void SendLeftClick(IntPtr window, int clientX, int clientY, TimeSpan clickTime)
+        public void SendLeftClick(IntPtr window, int clientX, int clientY, TimeSpan clickDownTime)
         {
             var coord = CreateMouseClickCoordinates(clientX, clientY);
             NativeWinApi.SendMessage(
@@ -144,12 +144,17 @@ namespace Win.Api
                 NativeWinApi.Messages.WM_LBUTTONDOWN,
                 NativeWinApi.MouseKeyFlags.MK_LBUTTON,
                 coord);
-            System.Threading.Thread.Sleep(clickTime);
+            System.Threading.Thread.Sleep(clickDownTime);
             NativeWinApi.SendMessage(
                 window,
                 NativeWinApi.Messages.WM_LBUTTONUP,
                 IntPtr.Zero,
                 coord);
+        }
+
+        private IntPtr CreateMouseClickCoordinates(int x, int y)
+        {
+            return (IntPtr)((y << 16) | (x & 0xffff));
         }
 
         // http://stackoverflow.com/questions/10280000/how-to-create-lparam-of-sendmessage-wm-keydown
