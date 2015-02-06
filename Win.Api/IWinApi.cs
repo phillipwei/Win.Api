@@ -30,5 +30,6 @@ namespace Win.Api
         void SetForegroundWindow(IntPtr handle);
         void SendKeys(IntPtr intPtr, string keys);
         void RefreshNotificationArea();
+        void CloseWindow(IntPtr handle);
     }
 }

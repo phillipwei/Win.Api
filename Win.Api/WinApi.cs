@@ -198,6 +198,12 @@ namespace Win.Api
             }
         }
 
+        public void CloseWindow(IntPtr hWnd)
+        {
+            if (!NativeWinApi.IsWindow(hWnd)) return;
+            NativeWinApi.SendMessage(hWnd, NativeWinApi.Messages.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+        }
+
         public void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod)
         {
             var first = GetWindows().First(wd => Equals(wd.Handle, handle));

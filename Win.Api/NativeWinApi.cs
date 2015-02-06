@@ -30,6 +30,7 @@ namespace Win.Api
         {
             WM_ACTIVATE = 0x0006,
             WM_SETREDRAW = 0x000B,
+            WM_CLOSE    = 0x0010,
             BM_GETCHECK = 0x00F0,
             BM_SETCHECK = 0x00F1,
             BM_GETSTATE = 0x00F2,
