@@ -16,7 +16,7 @@ namespace Win.Api
     public class WinApi : IWinApi
     {
         private static readonly ILog _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private readonly object _syncRoot = new object();
         public readonly int MaxWindowTitle = 512;
 
         public Rectangle GetWindowRectangle(IntPtr hWnd)
@@ -144,24 +144,30 @@ namespace Win.Api
 
         public void SendLeftClick(IntPtr window, int clientX, int clientY, TimeSpan clickDownTime)
         {
-            var coord = CreateMouseClickCoordinates(clientX, clientY);
-            NativeWinApi.SendMessage(
-                window,
-                NativeWinApi.Messages.WM_LBUTTONDOWN,
-                NativeWinApi.MouseKeyFlags.MK_LBUTTON,
-                coord);
-            System.Threading.Thread.Sleep(clickDownTime);
-            NativeWinApi.SendMessage(
-                window,
-                NativeWinApi.Messages.WM_LBUTTONUP,
-                IntPtr.Zero,
-                coord);
+            lock (_syncRoot)
+            {
+                var coord = CreateMouseClickCoordinates(clientX, clientY);
+                NativeWinApi.SendMessage(
+                    window,
+                    NativeWinApi.Messages.WM_LBUTTONDOWN,
+                    NativeWinApi.MouseKeyFlags.MK_LBUTTON,
+                    coord);
+                System.Threading.Thread.Sleep(clickDownTime);
+                NativeWinApi.SendMessage(
+                    window,
+                    NativeWinApi.Messages.WM_LBUTTONUP,
+                    IntPtr.Zero,
+                    coord);
+            }
         }
 
         public void SendDoubleLeftClick(IntPtr hwnd, Point point, TimeSpan clickDownTime)
         {
-            SendLeftClick(hwnd, point, clickDownTime);
-            SendLeftClick(hwnd, point, clickDownTime);
+            lock (_syncRoot)
+            {
+                SendLeftClick(hwnd, point, clickDownTime);
+                SendLeftClick(hwnd, point, clickDownTime);
+            }
         }
         
         private IntPtr CreateMouseClickCoordinates(int x, int y)
@@ -186,15 +192,21 @@ namespace Win.Api
 
         public void SendKey(IntPtr window, char c)
         {
-            SendKeyCode(window, NativeWinApi.VkKeyScan(c), false, NativeWinApi.Messages.WM_KEYDOWN);
-            SendKeyCode(window, NativeWinApi.VkKeyScan(c), false, NativeWinApi.Messages.WM_KEYUP);
+            lock (_syncRoot)
+            {
+                SendKeyCode(window, NativeWinApi.VkKeyScan(c), false, NativeWinApi.Messages.WM_KEYDOWN);
+                SendKeyCode(window, NativeWinApi.VkKeyScan(c), false, NativeWinApi.Messages.WM_KEYUP);
+            }
         }
 
         public void SendKeys(IntPtr window, string keys)
         {
-            foreach (var c in keys)
+            lock (_syncRoot)
             {
-                SendKey(window, c);
+                foreach (var c in keys)
+                {
+                    SendKey(window, c);
+                }
             }
         }
 
