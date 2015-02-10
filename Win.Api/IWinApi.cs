@@ -28,6 +28,7 @@ namespace Win.Api
         void SendDoubleLeftClick(IntPtr hwnd, Point point, TimeSpan clickDownTime);
         void RestoreWindow(IntPtr handle, TimeSpan timeoutPeriod);
         void SetForegroundWindow(IntPtr handle);
+        void SendKey(IntPtr intPtr, char c, bool ctrl);
         void SendKeys(IntPtr intPtr, string keys);
         void RefreshNotificationArea();
         void CloseWindow(IntPtr handle);

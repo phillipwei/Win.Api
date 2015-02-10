@@ -199,6 +199,16 @@ namespace Win.Api
             }
         }
 
+        public void SendKey(IntPtr window, char c, bool ctrl)
+        {
+            lock (_syncRoot)
+            {
+                if(ctrl) SendKeyCode(window, NativeWinApi.VirtualKeys.Control, false, NativeWinApi.Messages.WM_KEYDOWN);
+                SendKey(window, c);
+                if (ctrl) SendKeyCode(window, NativeWinApi.VirtualKeys.Control, false, NativeWinApi.Messages.WM_KEYUP);
+            }
+        }
+
         public void SendKeys(IntPtr window, string keys)
         {
             lock (_syncRoot)
