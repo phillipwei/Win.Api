@@ -20,8 +20,8 @@ namespace Win.Api
         /// <param name="processId"></param>
         /// <returns></returns>
         string GetProcessPath(int processId);
-        
-        Bitmap CaptureWindow(IntPtr hwnd, PixelFormat pixelFormat = PixelFormat.Format32bppArgb);
+
+        Bitmap CaptureWindow(IntPtr hwnd, PixelFormat pixelFormat = PixelFormat.Format24bppRgb);
         bool AdjustWindow(IntPtr handle, int x, int y, int width, int height);
         void SendLeftClick(IntPtr hwnd, Point point);
         void SendLeftClick(IntPtr hwnd, Point point, TimeSpan clickDownTime);
